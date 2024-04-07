@@ -112,9 +112,6 @@ class Client extends EventEmitter {
         this.pupBrowser = browser;
         this.pupPage = page;
 
-        await this.authStrategy.afterBrowserInitialized();
-        await this.initWebVersionCache();
-
         // ocVersion (isOfficialClient patch)
         // remove on after 2.3000.x
         await page.evaluateOnNewDocument(() => {
@@ -133,6 +130,9 @@ class Client extends EventEmitter {
             timeout: 0,
             referer: 'https://whatsapp.com/'
         });
+
+        await this.authStrategy.afterBrowserInitialized();
+        await this.initWebVersionCache();
 
         await page.evaluate(`function getElementByXpath(path) {
             return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
